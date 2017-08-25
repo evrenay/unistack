@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">unistack</string>
+    <string name="action_settings">Settings</string>
+    <string name="email">Email</string>
+    <string name="sifremi_unuttum">Şifremi Unuttum?</string>
+    <string name="henuz_kayit_oladinmi">Henüz Kayıt Olmadınız mı?</string>
+    <string name="kayıt_ol">Kayıt Ol</string>
+    <string name="password">Password</string>
+    <string name="buton_giris">Giriş Yap</string>
+    <string name="sifre_unuttum">Mail adresinizi giriniz.</string>
+    <string name="ad">Ad</string>
+    <string name="soyad">Soyad</string>
+    <string name="repassword">Password Tekrar</string>
+    <string name="kaydol">Kayıt Ol</string>
+    <string name="sifre_aciklama">Gönder butonuna tıkladığınızda mailinize bir link gönderilecektir..Gelen mailde ki linki tıkladığınız takdirde sizi yeni şifrenizi belirleyeceğiniz ekrana yönlendirecektir.</string>
+</resources>
