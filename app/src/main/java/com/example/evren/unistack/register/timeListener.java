@@ -1,4 +1,4 @@
-package com.example.evren.unistack;
+package com.example.evren.unistack.register;
 
 /**
  * Created by EVREN on 23.8.2017.

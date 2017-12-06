@@ -1,30 +1,33 @@
-package com.example.evren.unistack;
+package com.example.evren.unistack.register;
 
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.example.evren.unistack.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -42,14 +45,20 @@ public class Register extends Activity {
     //verileri sonraki activiye taşı
     //active olduğu zaman tüm verileri postla..
     Button Register;
+    Bundle bundle;
     AlphaAnimation inAnimation;
     AlphaAnimation outAnimation;
     FrameLayout progressBarHolder;
     Intent intent;
+    LinearLayout linearLayout;
     EditText Name, Surname, Email, Password, rePassword;
-    String edt_Name, edt_Surname, edt_Email, edt_Password, edt_rePassword,message;
-    private final OkHttpClient client = new OkHttpClient();
-
+    String edt_Name, edt_Surname, edt_Email, edt_Password, edt_rePassword;
+    private OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .build();
+    private String url = "https://api.unistackapp.com/user/register";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,44 +70,24 @@ public class Register extends Activity {
         rePassword = findViewById(R.id.register_repassword);
         Register = findViewById(R.id.register);
         progressBarHolder = findViewById(R.id.progressBarHolder);
-
+        linearLayout = findViewById(R.id.snackbar);
+        bundle = new Bundle();
         setErrorMessage();
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getData();
-                if (onClickRegister()==true && Email.getText().toString().contains("ogr") ){
+                if (onClickRegister()== true){
                     inAnimation = new AlphaAnimation(0f, 1f);
                     inAnimation.setDuration(200);
                     progressBarHolder.setAnimation(inAnimation);
                     progressBarHolder.setVisibility(View.VISIBLE);
-                    registerOgrenci();
-                intent = new Intent(getApplicationContext(),Activate.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("keyName",edt_Name);
-                    bundle.putString("keySurname",edt_Surname);
-                    bundle.putString("keyEmail",edt_Email);
-                    bundle.putString("keyPassword",edt_Password);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-                else if (onClickRegister()==true){
-                    inAnimation = new AlphaAnimation(0f, 1f);
-                    inAnimation.setDuration(200);
-                    progressBarHolder.setAnimation(inAnimation);
-                    progressBarHolder.setVisibility(View.VISIBLE);
-                    registerHoca();
-                    intent = new Intent(getApplicationContext(),Activate.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("keyName",edt_Name);
-                    bundle.putString("keySurname",edt_Surname);
-                    bundle.putString("keyEmail",edt_Email);
-                    bundle.putString("keyPassword",edt_Password);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    register();
+
                 }
                 else{
-                    Toast.makeText(getApplicationContext(),"Hata",Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar = Snackbar.make(linearLayout, R.string.register_error, Snackbar.LENGTH_LONG);
+                    snackbar.show();
                 }
 
             }
@@ -254,8 +243,7 @@ public class Register extends Activity {
     private boolean onClickRegister() {
 
         if (isEmpty(Name, Surname, Email, Password, rePassword) == false) {
-            Toast.makeText(getApplicationContext(), "Boş Alan Geçilemez", Toast.LENGTH_SHORT).show();
-                return false;
+            return false;
         } else if (checkPassword(Password, rePassword) == true) {
             rePassword.setError("Uyumsuz Password!");
                 return false;
@@ -281,7 +269,7 @@ public class Register extends Activity {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         okhttp3.RequestBody body = RequestBody.create(JSON, "");
         Request request = new Request.Builder()
-                .url("https://hidden-anchorage-49895.herokuapp.com/api/v1/users/" + edt_Email + "/activation")
+                .url(url)
                 .header("Content-Type", "application/json")
                 .post(body)
                 .build();
@@ -299,16 +287,26 @@ public class Register extends Activity {
                     public void run() {
                         if (response.isSuccessful()){
                         Toast.makeText(getApplicationContext(),"Mailinize Kod Gönderildi..", Toast.LENGTH_SHORT).show();
-                            outAnimation = new AlphaAnimation(1f, 0f);
-                            outAnimation.setDuration(200);
-                            progressBarHolder.setAnimation(outAnimation);
-                            progressBarHolder.setVisibility(View.GONE);}
-                        else {
-                            Toast.makeText(getApplicationContext(),"Bir Hata Oluştu.İntenet Bağlantınızı Kontrol Ediniz.!",Toast.LENGTH_SHORT).show();
+                            //intent = new Intent(getApplicationContext(),Activate.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putString("keyName",edt_Name);
+                            bundle.putString("keySurname",edt_Surname);
+                            bundle.putString("keyEmail",edt_Email);
+                            bundle.putString("keyPassword",edt_Password);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
                             outAnimation = new AlphaAnimation(1f, 0f);
                             outAnimation.setDuration(200);
                             progressBarHolder.setAnimation(outAnimation);
                             progressBarHolder.setVisibility(View.GONE);
+                                finish();}
+                        else {
+                            outAnimation = new AlphaAnimation(1f, 0f);
+                            outAnimation.setDuration(200);
+                            progressBarHolder.setAnimation(outAnimation);
+                            progressBarHolder.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(),R.string.register_connection_error,Toast.LENGTH_SHORT).show();
+
                         }
                     }
                 });
@@ -319,15 +317,19 @@ public class Register extends Activity {
 
 
     }
-    public void registerHoca() {
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        okhttp3.RequestBody body = RequestBody.create(JSON, "");
-        Request request = new Request.Builder()
-                .url("https://hidden-anchorage-49895.herokuapp.com/api/v1/plebs/"+edt_Email+"/activation")
-                .header("Content-Type", "application/json")
-                .post(body)
-                .build();
 
+    private void register() {
+
+           RequestBody formBody = new FormBody.Builder()
+               .add("uname",edt_Name)
+               .add("usurname",edt_Surname)
+               .add("uemail",edt_Email)
+               .add("upassword",edt_Password)
+               .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -336,23 +338,45 @@ public class Register extends Activity {
 
             @Override
             public void onResponse(Call call, final Response response) throws IOException {
+                String json = response.body().string();
+                try {
+                    JSONObject jsonObject = new JSONObject(json);
+                    final String code = jsonObject.getString("code");
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                    if (response.isSuccessful() && code.equals("200") ){
+                        outAnimation = new AlphaAnimation(1f, 0f);
+                        outAnimation.setDuration(200);
+                        progressBarHolder.setAnimation(outAnimation);
+                        progressBarHolder.setVisibility(View.GONE);
+                        Intent intent = new Intent(getApplicationContext(),Login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        bundle.putBoolean("veri",true);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                        finish();
 
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        if (response.isSuccessful()){
-                            Toast.makeText(getApplicationContext(),"Mailinize Kod Gönderildi.!", Toast.LENGTH_SHORT).show();}
-                        else {
-                            Toast.makeText(getApplicationContext(),"Bir Hata Oluştu.İntenet Bağlantınızı Kontrol Ediniz.!",Toast.LENGTH_SHORT).show();
-                        }
+
                     }
-                });
+                    else {
+                        outAnimation = new AlphaAnimation(1f, 0f);
+                        outAnimation.setDuration(200);
+                        progressBarHolder.setAnimation(outAnimation);
+                        progressBarHolder.setVisibility(View.GONE);
+                        Snackbar snackbar = Snackbar.make(linearLayout, "BİR HATA OLUŞTU TEKRAR DENEYİNİZ...", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                    }}
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
             }
         });
 
-
     }
+
 
 
 }

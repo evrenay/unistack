@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/snackbar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/progressBarHolder"
-        android:animateLayoutChanges="true"
-        android:visibility="gone"
-        android:alpha="0.4"
-        android:background="@android:color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:alpha="0.4"
+        android:animateLayoutChanges="true"
+        android:background="#ffe200"
+        android:visibility="gone">
 
-        <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_gravity="center" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="mailsent.json"
+            app:lottie_loop="true" />
     </FrameLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,10 +35,10 @@
         android:textStyle="bold" />
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/reg_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/reg_name"
-        android:layout_marginTop="10dp">
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/register_name"
@@ -48,22 +53,22 @@
         android:id="@+id/reg_surname"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:padding="10dp">
 
         <EditText
-            android:id="@+id/register_surname"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/soyad"
-            android:inputType="textPersonName" />
+        android:id="@+id/register_surname"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/soyad"
+        android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/reg_email"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/register_email"
@@ -78,7 +83,7 @@
         android:id="@+id/reg_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/register_password"
@@ -88,11 +93,12 @@
             android:hint="@string/password"
             android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/reg_repassword"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:padding="10dp">
 
         <EditText
             android:id="@+id/register_repassword"
@@ -108,7 +114,7 @@
         android:id="@+id/register"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_margin="10dp"
         android:background="#b45705"
         android:text="@string/kaydol"
         android:textColor="#fff" />

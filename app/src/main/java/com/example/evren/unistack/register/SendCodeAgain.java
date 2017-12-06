@@ -1,17 +1,15 @@
-package com.example.evren.unistack;
+package com.example.evren.unistack.register;
 
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.evren.unistack.R;
 
 import java.io.IOException;
 
@@ -22,8 +20,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static android.R.attr.inAnimation;
 
 /**
  * Created by EVREN on 22.8.2017.

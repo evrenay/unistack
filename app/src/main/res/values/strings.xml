@@ -12,5 +12,20 @@
     <string name="soyad">Soyad</string>
     <string name="repassword">Password Tekrar</string>
     <string name="kaydol">Kayıt Ol</string>
-    <string name="sifre_aciklama">Gönder butonuna tıkladığınızda mailinize bir link gönderilecektir..Gelen mailde ki linki tıkladığınız takdirde sizi yeni şifrenizi belirleyeceğiniz ekrana yönlendirecektir.</string>
+    <string name="undo_string">tamam</string>
+    <string name="register_error">Bilgilerinizi Kontrol Edip Tekrar Deneyiniz.</string>
+    <string name="register_connection_error">Bir Hata Oluştu.İntenet Bağlantınızı Kontrol Ediniz.!</string>
+    <string name="sifre_aciklama">Gönder butonuna tıkladığınızda mailinize geçici bir şifre gönderilecektir..Mailinize gelen geçici şifreniz ile uygulamaya giriş yapabilirsiniz</string>
+    <string-array name="clas_array">
+        <item>1. Sınıf</item>
+        <item>2. Sınıf</item>
+        <item>3. Sınıf</item>
+        <item>4. Sınıf</item>
+    </string-array>
+    <string-array name="program_array">
+        <item>Önlisans</item>
+        <item>Lisans</item>
+        <item>YüksekLisans</item>
+        <item>Doktora</item>
+    </string-array>
 </resources>
